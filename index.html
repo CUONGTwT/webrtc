@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1 id="peerId"></h1>
+    <iframe src="https://www.youtube.com/embed/5ChfdG70G20" frameborder="0" allow="accelerometer" allow="autoplay"
+        allowfullscreen></iframe>
+    <input type="text">
+    <button class="CreateRoom">CreateRoom</button>
+    <button class="JoinRoom">JoinRoom</button>
+    <button class="load">load</button>
+    <button class="play">play</button>
+    <button class="pause">pause</button>
+    <script>
+
+        const input = document.querySelector('input')
+
+        const iframe = document.querySelector("iframe");
+        const idpeer = document.getElementById('peerId')
+
+        const loadVideo = () => {
+            const url = input.value
+            const id = url.match(/watch\?v=([^&]+)/)[1];
+            iframe.src = `https://www.youtube.com/embed/${id}`
+        }
+        const playVideo = () => {
+            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        };
+
+        const pauseVideo = () => {
+            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        };
+
+        document.querySelector('.load').addEventListener('click', () => {
+
+        });
+        document.querySelector('.play').addEventListener('click', playVideo);
+
+        document.querySelector('.pause').addEventListener('click', pauseVideo);
+        const openStream = () => {
+            const config = {
+                audio: true,
+                video: true
+            }
+            return navigator.mediaDevices.getUserMedia(config)
+        }
+        // openStream().then((item) => console.log(item))
+
+
+        var peer = new Peer();
+        const id = peer.on('open', id => idpeer.append(id))
+
+
+
+    </script>
+</body>
+
+</html>
